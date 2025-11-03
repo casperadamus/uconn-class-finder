@@ -14,36 +14,61 @@ class ClassController extends Controller
     }
 
     public function index(Request $request)
-    {
-        $campus = $request->get('campus', 'STORR@STORRS');
-        $subject = $request->get('subject');
-        $catalogNumber = $request->get('catalog_nbr');
-        $keyword = $request->get('keyword');
-        
-        $classes = $this->apiService->searchClasses($campus, $subject, $catalogNumber, $keyword);
-        $campuses = $this->apiService->getCampuses();
-        $subjects = $this->apiService->getSubjects();
-        $terms = $this->apiService->getTerms();
+{
+    $campus = $request->get('campus', 'STORR@STORRS');
+    $subject = $request->get('subject');
+    $catalogNumber = $request->get('catalog_nbr');
+    $keyword = $request->get('keyword');
+    
+    $classes = $this->apiService->searchClasses($campus, $subject, $catalogNumber, $keyword);
+    $campuses = $this->apiService->getCampuses();
+    $subjects = $this->apiService->getSubjects();
+    $currentTermDisplay = $this->apiService->getCurrentTermDisplay();
 
-        return view('classes.index', compact(
-            'classes', 
-            'campuses', 
-            'campus', 
-            'subjects', 
-            'subject',
-            'terms',
-            'catalogNumber',
-            'keyword'
-        ));
+    // If we have classes, get detailed seat info for the first few (for performance)
+    $classesWithDetails = [];
+    if (is_array($classes) && !isset($classes['error'])) {
+        $classesWithDetails = $this->enhanceClassesWithSeatInfo(array_slice($classes, 0, 50)); // Limit to first 50 for performance
+    } else {
+        $classesWithDetails = $classes;
     }
 
-    public function apiData(Request $request)
-    {
-        $campus = $request->get('campus', 'STORR@STORRS');
-        $subject = $request->get('subject');
+    return view('classes.index', compact(
+        'classes', 
+        'classesWithDetails',
+        'campuses', 
+        'campus', 
+        'subjects', 
+        'subject',
+        'currentTermDisplay', 
+        'catalogNumber', 
+        'keyword'
+    ));
+}
+
+// New method to enhance classes with seat information
+private function enhanceClassesWithSeatInfo($classes)
+{
+    $enhancedClasses = [];
+    
+    foreach ($classes as $class) {
+        $courseKey = $class['key'] ?? null;
         
-        $classes = $this->apiService->searchClasses($campus, $subject);
+        if ($courseKey) {
+            // Get detailed course information
+            $details = $this->apiService->getCourseDetails($courseKey);
+            $class['seat_info'] = $this->apiService->parseSeatInfo($details);
+            $class['details'] = $details; // Store full details for debugging
+        } else {
+            $class['seat_info'] = 'N/A';
+        }
         
-        return response()->json($classes);
+        $enhancedClasses[] = $class;
+        
+        // Small delay to be nice to UConn's server
+        usleep(100000); // 0.1 second delay
     }
+    
+    return $enhancedClasses;
+}
 }
