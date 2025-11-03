@@ -3,9 +3,7 @@
 use App\Http\Controllers\ClassController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [ClassController::class, 'index']);
 
 Route::get('/classes', [ClassController::class, 'index'])->name('classes.index');
 
