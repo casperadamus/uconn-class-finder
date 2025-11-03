@@ -42,8 +42,7 @@
 </head>
 <body class="bg-gray-100">
     <div class="container mx-auto px-4 py-8">
-        <h1 class="text-3xl font-bold text-center mb-2 text-blue-800">UConn Class Finder</h1>
-        <p class="text-center text-gray-600 mb-8">Currently searching: Spring 2026</p>
+
 
         <!-- Search Form -->
         <div class="bg-white rounded-lg shadow-md p-6 mb-6">
@@ -264,7 +263,7 @@
         if (seatInfo) {
             seatInfoHtml = `
                 <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                    <h4 class="font-semibold text-blue-900 mb-2">📊 Seat Information</h4>
+                    <h4 class="font-semibold text-blue-900 mb-2"> Seat Information</h4>
                     <div class="grid grid-cols-2 gap-4 text-sm">
                         <div>
                             <span class="font-medium">Max Enrollment:</span>
@@ -289,7 +288,7 @@
         if (details.description) {
             descriptionHtml = `
                 <div>
-                    <h4 class="font-semibold text-gray-900 mb-2">📝 Description</h4>
+                    <h4 class="font-semibold text-gray-900 mb-2"> Description</h4>
                     <p class="text-sm text-gray-700">${cleanHtml(details.description)}</p>
                 </div>
             `;
@@ -300,7 +299,7 @@
         if (details.registration_restrictions) {
             requirementsHtml = `
                 <div>
-                    <h4 class="font-semibold text-gray-900 mb-2">🎓 Requirements</h4>
+                    <h4 class="font-semibold text-gray-900 mb-2"> Requirements</h4>
                     <p class="text-sm text-gray-700">${cleanHtml(details.registration_restrictions)}</p>
                 </div>
             `;
@@ -311,7 +310,7 @@
         if (details.consent_req_code) {
             consentHtml = `
                 <div>
-                    <h4 class="font-semibold text-gray-900 mb-2">✅ Consent Required</h4>
+                    <h4 class="font-semibold text-gray-900 mb-2"> Consent Required</h4>
                     <p class="text-sm text-gray-700">${cleanHtml(details.consent_req_code)}</p>
                 </div>
             `;
@@ -322,7 +321,7 @@
         if (details.camp_html) {
             campusHtml = `
                 <div>
-                    <h4 class="font-semibold text-gray-900 mb-2">🏫 Campus</h4>
+                    <h4 class="font-semibold text-gray-900 mb-2"> Campus</h4>
                     <p class="text-sm text-gray-700">${cleanHtml(details.camp_html)}</p>
                 </div>
             `;
@@ -333,7 +332,7 @@
         if (details.schd_html) {
             scheduleHtml = `
                 <div>
-                    <h4 class="font-semibold text-gray-900 mb-2">📚 Schedule Type</h4>
+                    <h4 class="font-semibold text-gray-900 mb-2"> Schedule Type</h4>
                     <p class="text-sm text-gray-700">${cleanHtml(details.schd_html)}</p>
                 </div>
             `;
@@ -344,7 +343,7 @@
         if (details.instmode) {
             instructionHtml = `
                 <div>
-                    <h4 class="font-semibold text-gray-900 mb-2">💻 Instruction Mode</h4>
+                    <h4 class="font-semibold text-gray-900 mb-2"> Instruction Mode</h4>
                     <p class="text-sm text-gray-700">${cleanHtml(details.instmode)}</p>
                 </div>
             `;
@@ -355,7 +354,7 @@
         if (details.hours_html) {
             creditsHtml = `
                 <div>
-                    <h4 class="font-semibold text-gray-900 mb-2">⏰ Credits</h4>
+                    <h4 class="font-semibold text-gray-900 mb-2"> Credits</h4>
                     <p class="text-sm text-gray-700">${cleanHtml(details.hours_html)}</p>
                 </div>
             `;
@@ -366,7 +365,7 @@
         if (details.reserved_seats) {
             reservedSeatsHtml = `
                 <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
-                    <h4 class="font-semibold text-gray-900 mb-2">🎯 Reserved Seats</h4>
+                    <h4 class="font-semibold text-gray-900 mb-2"> Reserved Seats</h4>
                     <div class="text-sm text-gray-700">${cleanHtml(details.reserved_seats)}</div>
                 </div>
             `;
@@ -377,7 +376,7 @@
         if (details.section_attributes) {
             attributesHtml = `
                 <div class="bg-purple-50 border border-purple-200 rounded-lg p-4">
-                    <h4 class="font-semibold text-purple-900 mb-2">🏷️ Attributes</h4>
+                    <h4 class="font-semibold text-purple-900 mb-2"> Attributes</h4>
                     <p class="text-sm text-purple-700">${cleanHtml(details.section_attributes)}</p>
                 </div>
             `;
