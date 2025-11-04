@@ -5,40 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UConn Class Finder</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        .course-details-popup {
-            animation: fadeIn 0.2s ease-in-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        /* Smooth scrolling for the popup */
-        .popup-content {
-            scrollbar-width: thin;
-            scrollbar-color: #cbd5e0 #f7fafc;
-        }
-
-        .popup-content::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .popup-content::-webkit-scrollbar-track {
-            background: #f7fafc;
-        }
-
-        .popup-content::-webkit-scrollbar-thumb {
-            background-color: #cbd5e0;
-            border-radius: 3px;
-        }
-        
-        .clickable-row:hover {
-            background-color: #dbeafe !important;
-            cursor: pointer;
-        }
-    </style>
 </head>
 <body class="bg-gray-100">
     <div class="container mx-auto px-4 py-8">
@@ -128,7 +94,7 @@
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200" id="classes-table">
                             @foreach($classes as $index => $class)
-                            <tr class="clickable-row {{ $index % 2 === 0 ? 'bg-white' : 'bg-gray-50' }}" 
+                            <tr class="{{ $index % 2 === 0 ? 'bg-white' : 'bg-gray-50' }}" 
                                 data-course-key="{{ $class['key'] }}">
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                     {{ $class['code'] ?? 'N/A' }}
@@ -157,8 +123,8 @@
                                     @endif
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
-                                    <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-semibold">
-                                        Click row
+                                    <span class="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-xs font-semibold">
+                                        -
                                     </span>
                                 </td>
                             </tr>
@@ -181,20 +147,6 @@
     </div>
 
     <script>
-    // Add click event listeners to all class rows
-    document.addEventListener('DOMContentLoaded', function() {
-        const classRows = document.querySelectorAll('.clickable-row');
-        
-        classRows.forEach(row => {
-            row.addEventListener('click', function() {
-                const courseKey = this.getAttribute('data-course-key');
-                if (courseKey) {
-                    showCourseDetails(courseKey);
-                }
-            });
-        });
-    });
-
     async function showCourseDetails(courseKey) {
         console.log('Loading details for course:', courseKey);
         
