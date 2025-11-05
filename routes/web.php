@@ -6,12 +6,9 @@ use Illuminate\Support\Facades\Route;
 // Make home page go directly to classes
 Route::get('/', [ClassController::class, 'index']);
 
-// Keep the classes route (so /classes still works)
 Route::get('/classes', [ClassController::class, 'index'])->name('classes.index');
 
-// Route for getting course details - MAKE SURE THIS LINE EXISTS
 Route::get('/course-details/{courseKey}', [ClassController::class, 'getCourseDetails']);
-// Add this test route to debug the API
 Route::get('/test-api', function () {
     $url = 'https://classes.uconn.edu/api/?page=fose&route=search&camp=STORR@STORRS';
     

@@ -24,6 +24,7 @@ class ClassController extends Controller
         $campuses = $this->apiService->getCampuses();
         $subjects = $this->apiService->getSubjects();
         $currentTermDisplay = $this->apiService->getCurrentTermDisplay();
+        
 
         return view('classes.index', compact(
             'classes', 
@@ -42,9 +43,9 @@ class ClassController extends Controller
         $details = $this->apiService->getCourseDetails($courseKey);
         $seatInfo = $this->apiService->parseSeatInfo($details);
         
-        return response()->json([
+        return response()->json([       
             'details' => $details,
-            'seat_info' => $seatInfo
+            'seats' => $seatInfo
         ]);
     }
 }

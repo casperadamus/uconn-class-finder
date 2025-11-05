@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UConn Class Finder</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100">
@@ -122,11 +121,10 @@
                                         </span>
                                     @endif
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
-                                    <span class="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-xs font-semibold">
-                                        -
-                                    </span>
-                                </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
+                                        <span class="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-xs font-semibold">
+                                            {{ $class['seats_available'] ?? '-' }} / {{ $class['seats_total'] ?? '-' }}
+                                    </td>
                             </tr>
                             @endforeach
                         </tbody>
@@ -140,7 +138,6 @@
             </div>
         @else
             <div class="bg-white rounded-lg shadow-md p-6 text-center">
-                <p class="text-gray-600">Select a campus and optionally a subject to search for classes.</p>
                 <p class="text-sm text-gray-500 mt-2">Currently searching: Spring 2026</p>
             </div>
         @endif

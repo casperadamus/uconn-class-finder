@@ -81,11 +81,11 @@ class UConnApiService
         }
     }
 
-    public function getCourseDetails($courseKey)
+    public function getCourseDetails($catalogNumber)
     {
         try {
             $payload = [
-                'key' => $courseKey,
+                'title' => $catalogNumber,
                 'srcdb' => '1263'
             ];
 
@@ -118,6 +118,7 @@ class UConnApiService
         if (isset($detailsData['seats'])) {
             $seatsHtml = $detailsData['seats'];
             
+            
             // Extract from: "Max Enrollment: 35 / Seats Available: 0"
             if (preg_match('/Max Enrollment:\s*(\d+)\s*\/\s*Seats Available:\s*(\d+)/', $seatsHtml, $matches)) {
                 return [
@@ -130,6 +131,8 @@ class UConnApiService
         
         return null;
     }
+
+
 
     public function getCurrentTermDisplay()
     {
