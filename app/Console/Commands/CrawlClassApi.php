@@ -44,15 +44,12 @@ class CrawlClassApi extends Command
                 continue;
             }
 
-            // 5. Process and save the results
+            // Process and save the results
             foreach ($results as $classData) {
                 
                 //dd($classData)
 
                 try {
-                    // 1. Split the "code" field (e.g., "AAAS 1000")
-                    // We use list() to assign the two parts to variables
-                    // We add ' ' and 2 to handle any missing data gracefully
                     list($subject, $catalog_number) = explode(' ', $classData['code'] . ' ', 2);
                     
                     // Trim whitespace

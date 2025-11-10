@@ -81,11 +81,11 @@ class UConnApiService
         }
     }
 
-    public function getCourseDetails($courseKey)
+    public function getCourseDetails($classData)
     {
         try {
             $payload = [
-                'key' => $courseKey,
+                'crn' => $classData['crn'],
                 'srcdb' => '1263'
             ];
 
