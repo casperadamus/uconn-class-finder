@@ -13,6 +13,7 @@ return new class extends Migration
             $table->string('subject');
             $table->string('catalog_number');
             $table->string('title');
+            $table->timestamps();
         });
     }
     
