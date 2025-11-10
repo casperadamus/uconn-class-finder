@@ -4,8 +4,9 @@ use App\Http\Controllers\ClassController;
 use Illuminate\Support\Facades\Route;
 
 // Make home page go directly to classes
-Route::get('/', [ClassController::class, 'index']);
-
+//Route::get('/', [ClassController::class, 'index']);
+Route::get('/', [ClassSearchController::class, 'index'])->name('search.index');
+Route::get('/search', [ClassSearchController::class, 'search'])->name('search.results');
 // Keep the classes route (so /classes still works)
 Route::get('/classes', [ClassController::class, 'index'])->name('classes.index');
 
