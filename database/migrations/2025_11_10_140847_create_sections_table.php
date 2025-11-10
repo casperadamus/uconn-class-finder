@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('professor')->nullable();
             $table->string('schedule')->nullable();
             $table->integer('open_seats')->default(0);
-
             $table->timestamps();
         });
     }
