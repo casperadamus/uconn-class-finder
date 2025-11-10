@@ -39,7 +39,7 @@ class CrawlClassApi extends Command
             }
 
             if (empty($results)) {
-                // This is a warning, not an error
+                
                 Log::info("No classes found for subject: $subjectAbbr");
                 continue;
             }
