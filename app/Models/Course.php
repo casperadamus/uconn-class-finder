@@ -2,19 +2,24 @@
 
 namespace App\Models;
 
-// 1. ADD THIS LINE
 use Illuminate\Database\Eloquent\Factories\HasFactory; 
-
 use Illuminate\Database\Eloquent\Model;
 
 class Course extends Model
 {
-  
     use HasFactory;
 
-    // 2. I also fixed the spelling of "catalog_number"
-    // Make sure this matches your database migration!
-    protected $fillable = ['subject','catalog_number','title'];
+    protected $fillable = [
+        'code',
+        'subject',
+        'catalog_number',
+        'title',
+        'description',
+        'campus',
+        'credits',
+        'prerequisites',
+        'term'
+    ];
 
     /**
      * Get the sections for the course.
@@ -22,5 +27,37 @@ class Course extends Model
     public function sections()
     {
         return $this->hasMany(Section::class);
+    }
+    
+    /**
+     * Get lecture sections only
+     */
+    public function lectures()
+    {
+        return $this->hasMany(Section::class)->where('type', 'LEC');
+    }
+    
+    /**
+     * Get lab sections only
+     */
+    public function labs()
+    {
+        return $this->hasMany(Section::class)->where('type', 'LAB');
+    }
+    
+    /**
+     * Get discussion sections only
+     */
+    public function discussions()
+    {
+        return $this->hasMany(Section::class)->where('type', 'DIS');
+    }
+    
+    /**
+     * Get available sections
+     */
+    public function availableSections()
+    {
+        return $this->hasMany(Section::class)->where('status', 'A')->where('seats_available', '>', 0);
     }
 }
