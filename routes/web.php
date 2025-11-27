@@ -54,3 +54,11 @@ Route::get('/api/sections/available', function () {
     
     return response()->json($sections);
 });
+
+// Test route to see raw UConn API response for CSE courses
+Route::get('/test/raw-api', function () {
+    $apiService = app(\App\Services\UConnApiService::class);
+    $rawData = $apiService->searchClasses('STORR@STORRS', 'CSE', '1010');
+    
+    dd($rawData);
+});

@@ -40,7 +40,7 @@ class CrawlUConnCourses extends Command
             $this->warn('Clearing existing data...');
             DB::table('sections')->truncate();
             DB::table('courses')->truncate();
-            $this->info('✓ Database cleared');
+            $this->info('Database cleared');
             $this->info('');
         }
 
