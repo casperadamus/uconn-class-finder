@@ -18,10 +18,10 @@
                 </div>
                 <div class="course-meta">
                     @if($course->credits)
-                        <div class="meta-item">💳 {{ $course->credits }} credits</div>
+                        <div class="meta-item"> {{ $course->credits }} credits</div>
                     @endif
                     @if($course->campus)
-                        <div class="meta-item">📍 {{ $course->campus }}</div>
+                        <div class="meta-item"> {{ $course->campus }}</div>
                     @endif
                 </div>
             </div>
