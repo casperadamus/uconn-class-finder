@@ -4,55 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $course->code }} - {{ $course->title }}</title>
-   
 </head>
 <body>
-    <div class="container">
-        <a href="/courses" class="back-link">← Back to Courses</a>
+    <p><a href="/courses">← Back to Courses</a></p>
 
-        <div class="course-header">
-            <h1>{{ $course->title }}</h1>
-            <div class="course-code">{{ $course->code }}</div>
+    <header>
+        <h1>{{ $course->title }}</h1>
+        <p><strong>Course Code:</strong> {{ $course->code }}</p>
 
-            @if($course->description)
-            <div class="description">
-                {{ $course->description }}
-            </div>
+        @if($course->description)
+            <p>{{ $course->description }}</p>
+        @endif
+
+        <ul>
+            @if($course->credits)
+                <li><strong>Credits:</strong> {{ $course->credits }}</li>
             @endif
-
-            <div class="meta-row">
-                @if($course->credits)
-                <div class="meta-item">
-                    <strong>Credits:</strong> {{ $course->credits }}
-                </div>
-                @endif
-                @if($course->campus)
-                <div class="meta-item">
-                    <strong>Campus:</strong> {{ $course->campus }}
-                </div>
-                @endif
-                <div class="meta-item">
-                    <strong>Term:</strong> {{ $course->term }}
-                </div>
-                <div class="meta-item">
-                    <strong>Total Sections:</strong> {{ $course->sections->count() }}
-                </div>
-            </div>
-
-            @if($course->prerequisites)
-            <div class="meta-row">
-                <div class="meta-item" style="flex-direction: column; align-items: start;">
-                    <strong>Prerequisites:</strong>
-                    <div style="margin-top: 5px; color: #666;">{{ $course->prerequisites }}</div>
-                </div>
-            </div>
+            @if($course->campus)
+                <li><strong>Campus:</strong> {{ $course->campus }}</li>
             @endif
-        </div>
+            <li><strong>Term:</strong> {{ $course->term }}</li>
+            <li><strong>Total Sections:</strong> {{ $course->sections->count() }}</li>
+        </ul>
 
-        <div class="sections-container">
-            @if($lectures->count() > 0)
+        @if($course->prerequisites)
+            <p><strong>Prerequisites:</strong> {{ $course->prerequisites }}</p>
+        @endif
+    </header>
+
+    <main>
+        @if($lectures->count() > 0)
             <h2>Lecture Sections ({{ $lectures->count() }})</h2>
-            <table class="sections-table">
+            <table>
                 <thead>
                     <tr>
                         <th>CRN</th>
@@ -67,45 +50,26 @@
                     @foreach($lectures as $section)
                     <tr>
                         <td><strong>{{ $section->crn }}</strong></td>
-                        <td>
-                            <span class="type-badge">{{ $section->type }}</span>
-                            {{ $section->section_number }}
-                        </td>
+                        <td>{{ $section->type }} {{ $section->section_number }}</td>
                         <td>{{ $section->meeting_time_display ?? 'TBA' }}</td>
-                        <td>
-                            <span class="status-badge status-{{ $section->status == 'A' ? 'available' : 'full' }}">
-                                {{ $section->status == 'A' ? 'Available' : 'Full' }}
-                            </span>
-                        </td>
+                        <td>{{ $section->status == 'A' ? 'Available' : 'Full' }}</td>
                         <td>
                             @if($section->max_enrollment > 0)
-                                @php
-                                    $percentage = ($section->seats_available / $section->max_enrollment) * 100;
-                                    $class = $percentage > 30 ? 'seats-good' : ($percentage > 10 ? 'seats-low' : 'seats-none');
-                                @endphp
-                                <span class="{{ $class }}">
-                                    {{ $section->seats_available }}/{{ $section->max_enrollment }}
-                                </span>
+                                {{ $section->seats_available }}/{{ $section->max_enrollment }}
                             @else
-                                <span style="color: #999;">-</span>
+                                -
                             @endif
                         </td>
-                        <td>
-                            @if($section->linked_crns)
-                                <span class="linked-sections">{{ $section->linked_crns }}</span>
-                            @else
-                                <span style="color: #999;">None</span>
-                            @endif
-                        </td>
+                        <td>{{ $section->linked_crns ?? 'None' }}</td>
                     </tr>
                     @endforeach
                 </tbody>
             </table>
-            @endif
+        @endif
 
-            @if($labs->count() > 0)
+        @if($labs->count() > 0)
             <h2>Lab Sections ({{ $labs->count() }})</h2>
-            <table class="sections-table">
+            <table>
                 <thead>
                     <tr>
                         <th>CRN</th>
@@ -120,45 +84,26 @@
                     @foreach($labs as $section)
                     <tr>
                         <td><strong>{{ $section->crn }}</strong></td>
-                        <td>
-                            <span class="type-badge" style="background: #17a2b8;">{{ $section->type }}</span>
-                            {{ $section->section_number }}
-                        </td>
+                        <td>{{ $section->type }} {{ $section->section_number }}</td>
                         <td>{{ $section->meeting_time_display ?? 'TBA' }}</td>
-                        <td>
-                            <span class="status-badge status-{{ $section->status == 'A' ? 'available' : 'full' }}">
-                                {{ $section->status == 'A' ? 'Available' : 'Full' }}
-                            </span>
-                        </td>
+                        <td>{{ $section->status == 'A' ? 'Available' : 'Full' }}</td>
                         <td>
                             @if($section->max_enrollment > 0)
-                                @php
-                                    $percentage = ($section->seats_available / $section->max_enrollment) * 100;
-                                    $class = $percentage > 30 ? 'seats-good' : ($percentage > 10 ? 'seats-low' : 'seats-none');
-                                @endphp
-                                <span class="{{ $class }}">
-                                    {{ $section->seats_available }}/{{ $section->max_enrollment }}
-                                </span>
+                                {{ $section->seats_available }}/{{ $section->max_enrollment }}
                             @else
-                                <span style="color: #999;">-</span>
+                                -
                             @endif
                         </td>
-                        <td>
-                            @if($section->linked_crns)
-                                <span class="linked-sections">{{ $section->linked_crns }}</span>
-                            @else
-                                <span style="color: #999;">None</span>
-                            @endif
-                        </td>
+                        <td>{{ $section->linked_crns ?? 'None' }}</td>
                     </tr>
                     @endforeach
                 </tbody>
             </table>
-            @endif
+        @endif
 
-            @if($discussions->count() > 0)
+        @if($discussions->count() > 0)
             <h2>Discussion Sections ({{ $discussions->count() }})</h2>
-            <table class="sections-table">
+            <table>
                 <thead>
                     <tr>
                         <th>CRN</th>
@@ -173,45 +118,26 @@
                     @foreach($discussions as $section)
                     <tr>
                         <td><strong>{{ $section->crn }}</strong></td>
-                        <td>
-                            <span class="type-badge" style="background: #6f42c1;">{{ $section->type }}</span>
-                            {{ $section->section_number }}
-                        </td>
+                        <td>{{ $section->type }} {{ $section->section_number }}</td>
                         <td>{{ $section->meeting_time_display ?? 'TBA' }}</td>
-                        <td>
-                            <span class="status-badge status-{{ $section->status == 'A' ? 'available' : 'full' }}">
-                                {{ $section->status == 'A' ? 'Available' : 'Full' }}
-                            </span>
-                        </td>
+                        <td>{{ $section->status == 'A' ? 'Available' : 'Full' }}</td>
                         <td>
                             @if($section->max_enrollment > 0)
-                                @php
-                                    $percentage = ($section->seats_available / $section->max_enrollment) * 100;
-                                    $class = $percentage > 30 ? 'seats-good' : ($percentage > 10 ? 'seats-low' : 'seats-none');
-                                @endphp
-                                <span class="{{ $class }}">
-                                    {{ $section->seats_available }}/{{ $section->max_enrollment }}
-                                </span>
+                                {{ $section->seats_available }}/{{ $section->max_enrollment }}
                             @else
-                                <span style="color: #999;">-</span>
+                                -
                             @endif
                         </td>
-                        <td>
-                            @if($section->linked_crns)
-                                <span class="linked-sections">{{ $section->linked_crns }}</span>
-                            @else
-                                <span style="color: #999;">None</span>
-                            @endif
-                        </td>
+                        <td>{{ $section->linked_crns ?? 'None' }}</td>
                     </tr>
                     @endforeach
                 </tbody>
             </table>
-            @endif
+        @endif
 
-            @if($seminars->count() > 0)
+        @if($seminars->count() > 0)
             <h2>Seminar Sections ({{ $seminars->count() }})</h2>
-            <table class="sections-table">
+            <table>
                 <thead>
                     <tr>
                         <th>CRN</th>
@@ -226,48 +152,27 @@
                     @foreach($seminars as $section)
                     <tr>
                         <td><strong>{{ $section->crn }}</strong></td>
-                        <td>
-                            <span class="type-badge" style="background: #28a745;">{{ $section->type }}</span>
-                            {{ $section->section_number }}
-                        </td>
+                        <td>{{ $section->type }} {{ $section->section_number }}</td>
                         <td>{{ $section->meeting_time_display ?? 'TBA' }}</td>
-                        <td>
-                            <span class="status-badge status-{{ $section->status == 'A' ? 'available' : 'full' }}">
-                                {{ $section->status == 'A' ? 'Available' : 'Full' }}
-                            </span>
-                        </td>
+                        <td>{{ $section->status == 'A' ? 'Available' : 'Full' }}</td>
                         <td>
                             @if($section->max_enrollment > 0)
-                                @php
-                                    $percentage = ($section->seats_available / $section->max_enrollment) * 100;
-                                    $class = $percentage > 30 ? 'seats-good' : ($percentage > 10 ? 'seats-low' : 'seats-none');
-                                @endphp
-                                <span class="{{ $class }}">
-                                    {{ $section->seats_available }}/{{ $section->max_enrollment }}
-                                </span>
+                                {{ $section->seats_available }}/{{ $section->max_enrollment }}
                             @else
-                                <span style="color: #999;">-</span>
+                                -
                             @endif
                         </td>
-                        <td>
-                            @if($section->linked_crns)
-                                <span class="linked-sections">{{ $section->linked_crns }}</span>
-                            @else
-                                <span style="color: #999;">None</span>
-                            @endif
-                        </td>
+                        <td>{{ $section->linked_crns ?? 'None' }}</td>
                     </tr>
                     @endforeach
                 </tbody>
             </table>
-            @endif
+        @endif
 
-            @if($lectures->count() == 0 && $labs->count() == 0 && $discussions->count() == 0 && $seminars->count() == 0)
-            <div class="no-data">
-                No sections available for this course.
-            </div>
-            @endif
-        </div>
-    </div>
+        @if($lectures->count() == 0 && $labs->count() == 0 && $discussions->count() == 0 && $seminars->count() == 0)
+            <p><em>No sections available for this course.</em></p>
+        @endif
+    </main>
+
 </body>
 </html>

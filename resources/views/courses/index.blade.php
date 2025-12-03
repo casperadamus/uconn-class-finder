@@ -4,162 +4,127 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UConn Courses</title>
-    
 </head>
 <body>
-    <div class="container">
+    <h1>UConn Courses</h1>
 
-        @foreach($courses as $course)
-        <div class="course-card">
-            <div class="course-header">
-                <div class="course-title">
-                    <div class="course-code">{{ $course->code }}</div>
-                    <div class="course-name">{{ $course->title }}</div>
-                </div>
-                <div class="course-meta">
-                    @if($course->credits)
-                        <div class="meta-item"> {{ $course->credits }} credits</div>
-                    @endif
-                    @if($course->campus)
-                        <div class="meta-item"> {{ $course->campus }}</div>
-                    @endif
-                </div>
-            </div>
+    @foreach($courses as $course)
+        <article>
+            <h2>{{ $course->code }} - {{ $course->title }}</h2>
+            
+            <p>
+                @if($course->credits)
+                    {{ $course->credits }} credits
+                @endif
+                @if($course->campus)
+                    - {{ $course->campus }}
+                @endif
+            </p>
 
             @if($course->description)
-            <div style="color: #666; font-size: 0.9rem; margin-bottom: 10px; line-height: 1.5;">
-                {{ Str::limit($course->description, 200) }}
-            </div>
+                <p>{{ Str::limit($course->description, 200) }}</p>
             @endif
 
-            <div class="sections-summary">
-                @php
-                    $lectures = $course->sections->whereIn('type', ['LEC', 'LSA']); // Include standalone lectures
-                    $labs = $course->sections->where('type', 'LAB');
-                    $discussions = $course->sections->where('type', 'DIS');
-                    $seminars = $course->sections->whereIn('type', ['SEM', 'THE', 'IND']); // Other types
-                @endphp
+            @php
+                $lectures = $course->sections->whereIn('type', ['LEC', 'LSA']);
+                $labs = $course->sections->where('type', 'LAB');
+                $discussions = $course->sections->where('type', 'DIS');
+                $seminars = $course->sections->whereIn('type', ['SEM', 'THE', 'IND']);
+            @endphp
 
-                @if($lectures->count() > 0)
-                <div class="section-group">
-                    <h4>Lectures ({{ $lectures->count() }})</h4>
+            @if($lectures->count() > 0)
+                <h3>Lectures ({{ $lectures->count() }})</h3>
+                <ul>
                     @foreach($lectures->take(3) as $section)
-                    <div class="section-item {{ $section->status == 'A' ? 'available' : 'full' }}">
-                        <span>
+                        <li>
                             CRN {{ $section->crn }} - {{ $section->section_number }}
                             @if($section->meeting_time_display)
-                                <br><small>{{ $section->meeting_time_display }}</small>
+                                - {{ $section->meeting_time_display }}
                             @endif
-                        </span>
-                        @if($section->max_enrollment > 0)
-                        <span class="seats {{ $section->seats_available == 0 ? 'seats-none' : '' }}">
-                            {{ $section->seats_available }}/{{ $section->max_enrollment }}
-                        </span>
-                        @else
-                        <span class="badge {{ $section->status == 'A' ? 'badge-success' : 'badge-danger' }}">
-                            {{ $section->status == 'A' ? 'Open' : 'Full' }}
-                        </span>
-                        @endif
-                    </div>
+                            @if($section->max_enrollment > 0)
+                                - {{ $section->seats_available }}/{{ $section->max_enrollment }} seats
+                            @else
+                                - {{ $section->status == 'A' ? 'Open' : 'Full' }}
+                            @endif
+                        </li>
                     @endforeach
                     @if($lectures->count() > 3)
-                        <small style="color: #666;">+ {{ $lectures->count() - 3 }} more</small>
+                        <li><em>+ {{ $lectures->count() - 3 }} more</em></li>
                     @endif
-                </div>
-                @endif
+                </ul>
+            @endif
 
-                @if($labs->count() > 0)
-                <div class="section-group">
-                    <h4>Labs ({{ $labs->count() }})</h4>
+            @if($labs->count() > 0)
+                <h3>Labs ({{ $labs->count() }})</h3>
+                <ul>
                     @foreach($labs->take(3) as $section)
-                    <div class="section-item {{ $section->status == 'A' ? 'available' : 'full' }}">
-                        <span>
+                        <li>
                             CRN {{ $section->crn }} - {{ $section->section_number }}
                             @if($section->meeting_time_display)
-                                <br><small>{{ $section->meeting_time_display }}</small>
+                                - {{ $section->meeting_time_display }}
                             @endif
-                        </span>
-                        @if($section->max_enrollment > 0)
-                        <span class="seats {{ $section->seats_available == 0 ? 'seats-none' : '' }}">
-                            {{ $section->seats_available }}/{{ $section->max_enrollment }}
-                        </span>
-                        @else
-                        <span class="badge {{ $section->status == 'A' ? 'badge-success' : 'badge-danger' }}">
-                            {{ $section->status == 'A' ? 'Open' : 'Full' }}
-                        </span>
-                        @endif
-                    </div>
+                            @if($section->max_enrollment > 0)
+                                - {{ $section->seats_available }}/{{ $section->max_enrollment }} seats
+                            @else
+                                - {{ $section->status == 'A' ? 'Open' : 'Full' }}
+                            @endif
+                        </li>
                     @endforeach
                     @if($labs->count() > 3)
-                        <small style="color: #666;">+ {{ $labs->count() - 3 }} more</small>
+                        <li><em>+ {{ $labs->count() - 3 }} more</em></li>
                     @endif
-                </div>
-                @endif
+                </ul>
+            @endif
 
-                @if($discussions->count() > 0)
-                <div class="section-group">
-                    <h4>Discussions ({{ $discussions->count() }})</h4>
+            @if($discussions->count() > 0)
+                <h3>Discussions ({{ $discussions->count() }})</h3>
+                <ul>
                     @foreach($discussions->take(3) as $section)
-                    <div class="section-item {{ $section->status == 'A' ? 'available' : 'full' }}">
-                        <span>
+                        <li>
                             CRN {{ $section->crn }} - {{ $section->section_number }}
                             @if($section->meeting_time_display)
-                                <br><small>{{ $section->meeting_time_display }}</small>
+                                - {{ $section->meeting_time_display }}
                             @endif
-                        </span>
-                        @if($section->max_enrollment > 0)
-                        <span class="seats {{ $section->seats_available == 0 ? 'seats-none' : '' }}">
-                            {{ $section->seats_available }}/{{ $section->max_enrollment }}
-                        </span>
-                        @else
-                        <span class="badge {{ $section->status == 'A' ? 'badge-success' : 'badge-danger' }}">
-                            {{ $section->status == 'A' ? 'Open' : 'Full' }}
-                        </span>
-                        @endif
-                    </div>
+                            @if($section->max_enrollment > 0)
+                                - {{ $section->seats_available }}/{{ $section->max_enrollment }} seats
+                            @else
+                                - {{ $section->status == 'A' ? 'Open' : 'Full' }}
+                            @endif
+                        </li>
                     @endforeach
                     @if($discussions->count() > 3)
-                        <small style="color: #666;">+ {{ $discussions->count() - 3 }} more</small>
+                        <li><em>+ {{ $discussions->count() - 3 }} more</em></li>
                     @endif
-                </div>
-                @endif
+                </ul>
+            @endif
 
-                @if($seminars->count() > 0)
-                <div class="section-group">
-                    <h4>Seminars ({{ $seminars->count() }})</h4>
+            @if($seminars->count() > 0)
+                <h3>Seminars ({{ $seminars->count() }})</h3>
+                <ul>
                     @foreach($seminars->take(3) as $section)
-                    <div class="section-item {{ $section->status == 'A' ? 'available' : 'full' }}">
-                        <span>
+                        <li>
                             CRN {{ $section->crn }} - {{ $section->section_number }}
                             @if($section->meeting_time_display)
-                                <br><small>{{ $section->meeting_time_display }}</small>
+                                - {{ $section->meeting_time_display }}
                             @endif
-                        </span>
-                        @if($section->max_enrollment > 0)
-                        <span class="seats {{ $section->seats_available == 0 ? 'seats-none' : '' }}">
-                            {{ $section->seats_available }}/{{ $section->max_enrollment }}
-                        </span>
-                        @else
-                        <span class="badge {{ $section->status == 'A' ? 'badge-success' : 'badge-danger' }}">
-                            {{ $section->status == 'A' ? 'Open' : 'Full' }}
-                        </span>
-                        @endif
-                    </div>
+                            @if($section->max_enrollment > 0)
+                                - {{ $section->seats_available }}/{{ $section->max_enrollment }} seats
+                            @else
+                                - {{ $section->status == 'A' ? 'Open' : 'Full' }}
+                            @endif
+                        </li>
                     @endforeach
                     @if($seminars->count() > 3)
-                        <small style="color: #666;">+ {{ $seminars->count() - 3 }} more</small>
+                        <li><em>+ {{ $seminars->count() - 3 }} more</em></li>
                     @endif
-                </div>
-                @endif
-            </div>
+                </ul>
+            @endif
 
-            <a href="/courses/{{ $course->code }}" class="view-details">View All Sections →</a>
-        </div>
-        @endforeach
+            <p><a href="/courses/{{ $course->code }}">View All Sections →</a></p>
+        </article>
+    @endforeach
 
-        <div class="pagination">
-            {!! $courses->links() !!}
-        </div>
-    </div>
+    {!! $courses->links() !!}
+
 </body>
 </html>

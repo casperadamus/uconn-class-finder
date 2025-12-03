@@ -32,12 +32,12 @@ class CrawlUConnCourses extends Command
     {
         $this->apiService = $apiService;
         
-        $this->info('Starting UConn Course Crawler...');
+        $this->info('Starting UConn Course Crawler');
         $this->info('');
 
         // Fresh start if requested
         if ($this->option('fresh')) {
-            $this->warn('Clearing existing data...');
+            $this->warn('Clearing existing data');
             DB::table('sections')->truncate();
             DB::table('courses')->truncate();
             $this->info('Database cleared');
@@ -52,8 +52,6 @@ class CrawlUConnCourses extends Command
         } else {
             $this->crawlAllSubjects($campus);
         }
-
-        $this->displayStats();
     }
 
     private function crawlAllSubjects($campus)
@@ -70,7 +68,7 @@ class CrawlUConnCourses extends Command
         foreach ($subjects as $code => $name) {
             if (empty($code)) continue; // Skip "All Subjects"
             
-            $bar->setMessage("Processing {$code}...");
+            $bar->setMessage("Processing {$code}");
             $this->crawlSubject($code, $campus, false);
             $bar->advance();
         }
@@ -83,7 +81,7 @@ class CrawlUConnCourses extends Command
     private function crawlSubject($subjectCode, $campus, $showProgress = true)
     {
         if ($showProgress) {
-            $this->info("Crawling {$subjectCode} courses...");
+            $this->info("Crawling {$subjectCode} courses");
         }
 
         // Search for all courses in this subject
@@ -128,7 +126,7 @@ class CrawlUConnCourses extends Command
         // Use the first section to get course-level info
         $firstSection = $sections[0];
         
-        // Extract subject and catalog number from code (e.g., "CSE 1010" -> "CSE", "1010")
+        // Extract subject and catalog number from code (
         $parts = explode(' ', $courseCode);
         $subject = $parts[0];
         $catalogNumber = $parts[1] ?? '';
@@ -186,12 +184,8 @@ class CrawlUConnCourses extends Command
             'mpkey' => $data['mpkey'] ?? null,
             'section_number' => $data['no'],
             'type' => $data['schd'],
-            'status' => $data['stat'],
-            'meeting_time_display' => $data['meets'] ?? null,
-            'meeting_times' => $meetingTimes,
             'linked_crns' => $data['linked_crns'] ?? null,
             'is_enrollment_section' => ($data['is_enroll_section'] ?? '0') === '1',
-            'professor' => $data['instr'] ?? null,
             'instruction_mode' => $data['instmode'] ?? null,
         ];
 
@@ -238,30 +232,4 @@ class CrawlUConnCourses extends Command
         return null;
     }
 
-    private function displayStats()
-    {
-        $this->info('');
-        $this->info('Crawl Statistics:');
-        $this->info('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-        $this->table(
-            ['Metric', 'Count'],
-            [
-                ['Courses Created', $this->stats['courses_created']],
-                ['Courses Updated', $this->stats['courses_updated']],
-                ['Sections Created', $this->stats['sections_created']],
-                ['Sections Updated', $this->stats['sections_updated']],
-                ['Errors', $this->stats['errors']],
-            ]
-        );
-        
-        $totalCourses = $this->stats['courses_created'] + $this->stats['courses_updated'];
-        $totalSections = $this->stats['sections_created'] + $this->stats['sections_updated'];
-        
-        $this->info('');
-        $this->info("Total: {$totalCourses} courses, {$totalSections} sections");
-        
-        if ($this->stats['errors'] > 0) {
-            $this->warn("{$this->stats['errors']} errors occurred");
-        }
-    }
 }
