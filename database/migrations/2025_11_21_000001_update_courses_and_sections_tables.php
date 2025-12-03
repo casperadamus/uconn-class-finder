@@ -16,13 +16,13 @@ return new class extends Migration
             
             $table->string('crn')->unique(); // Course Reference Number (unique)
             $table->string('key'); // UConn API key (not always unique)
-            $table->string('section_number'); // e.g., "001", "002L"
+            $table->string('section_number'); 
             $table->string('type'); // LEC, LAB, DIS, etc.
             $table->integer('max_enrollment')->default(0); // Maximum students allowed
             $table->integer('seats_available')->default(0); // Current available seats
             $table->text('linked_crns')->nullable(); // Related sections
             $table->boolean('is_enrollment_section')->default(false);
-            $table->string('instruction_mode')->nullable(); // In Person, Online, etc.
+            $table->string('instruction_mode')->nullable(); 
             $table->timestamps();
             
             // Add foreign key
